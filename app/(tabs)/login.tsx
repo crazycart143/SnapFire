@@ -8,14 +8,17 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication functions
 import { FIREBASE_AUTH } from "../../firebaseConfig"; // Adjust the import path accordingly
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
@@ -30,7 +33,8 @@ export default function Login() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("User logged in:", user);
+        Alert.alert("User logged in!");
+        Alert.alert("Email:" + user.email);
         // Navigate to your main application screen or dashboard
       })
       .catch((error) => {
@@ -41,73 +45,95 @@ export default function Login() {
       });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.titleContainer}>
-        <Video
-          ref={video}
-          style={styles.video}
-          source={require("../../assets/videos/background.mp4")}
-          resizeMode={ResizeMode.COVER}
-          isLooping
-          shouldPlay
-          onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-        />
-        <Image
-          source={require("../../assets/images/logo.png")}
-          style={styles.logo}
-        />
-        <Text style={styles.title}>SNAP FIRE</Text>
-      </View>
-      <View style={styles.loginContainer}>
-        <Text style={styles.headerText}>Login</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#ccc"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#ccc"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Log In</Text>
-        </TouchableOpacity>
-        <View style={styles.socialLoginContainer}>
-          <Text style={styles.orText}>or</Text>
-          <View style={styles.socialLoginSubContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Image
-                source={require("../../assets/images/google-logo.png")}
-                style={styles.socialIcon}
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.titleContainer}>
+          <Video
+            ref={video}
+            style={styles.video}
+            source={require("../../assets/videos/background.mp4")}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+            shouldPlay
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+          <Image
+            source={require("../../assets/images/logo.png")}
+            style={styles.logo}
+          />
+          <Text style={styles.title}>SNAP FIRE</Text>
+        </View>
+        <View style={styles.loginContainer}>
+          <Text style={styles.headerText}>Login</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#ccc"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              placeholderTextColor="#ccc"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword} // Toggle secureTextEntry based on showPassword state
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={togglePasswordVisibility}
+            >
+              <MaterialIcons
+                name={showPassword ? "visibility-off" : "visibility"}
+                size={24}
+                color="#ccc"
               />
-              <Text style={styles.socialButtonText}>Google</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Image
-                source={require("../../assets/images/facebook-logo.webp")}
-                style={styles.socialIcon}
-              />
-              <Text style={styles.socialButtonText}>Facebook</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Register</Text>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>Log In</Text>
           </TouchableOpacity>
-          <Text style={styles.noAccountText}>Don't have an account?</Text>
+          <View style={styles.socialLoginContainer}>
+            <View style={styles.dividerContainer}>
+              <View style={styles.divider} />
+              <Text style={styles.orText}>or</Text>
+              <View style={styles.divider} />
+            </View>
+            <View style={styles.socialLoginSubContainer}>
+              <TouchableOpacity style={styles.socialButton}>
+                <Image
+                  source={require("../../assets/images/google-logo.png")}
+                  style={styles.socialIcon}
+                />
+                <Text style={styles.socialButtonText}>Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.socialButton}>
+                <Image
+                  source={require("../../assets/images/facebook-logo.webp")}
+                  style={styles.socialIcon}
+                />
+                <Text style={styles.socialButtonText}>Facebook</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+            <Text style={styles.noAccountText}>Don't have an account?</Text>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -117,7 +143,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     justifyContent: "flex-end",
     alignContent: "flex-end",
-    minHeight: 600,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -135,7 +160,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
     position: "absolute",
-    top: "35%",
+    top: "30%",
     zIndex: 2,
   },
   title: {
@@ -143,7 +168,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     position: "absolute",
-    top: "75%",
+    top: "70%",
     zIndex: 2,
     color: "#FFA726",
   },
@@ -161,9 +186,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 80,
     borderTopRightRadius: 80,
     height: "70%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 30,
+    paddingTop: 40,
   },
   input: {
     backgroundColor: "#fff",
@@ -175,6 +201,40 @@ const styles = StyleSheet.create({
     width: "100%",
     borderColor: "#FFA726",
     borderWidth: 1,
+  },
+  passwordContainer: {
+    position: "relative",
+    width: "100%",
+  },
+  passwordInput: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    marginBottom: 10,
+    color: "#000",
+    width: "100%",
+    borderColor: "#FFA726",
+    borderWidth: 1,
+  },
+  eyeIcon: {
+    position: "absolute",
+    top: 15,
+    right: 20,
+  },
+  dividerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    width: "100%",
+  },
+  divider: {
+    flex: 1,
+    height: 2,
+    marginBottom: 4,
+    marginHorizontal: 10,
+    backgroundColor: "#ccc",
   },
   buttonContainer: {
     flexDirection: "row-reverse",
