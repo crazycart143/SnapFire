@@ -6,8 +6,6 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs>
       <Tabs.Screen name="login" options={{ headerShown: false }} />

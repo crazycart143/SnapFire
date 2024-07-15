@@ -6,37 +6,43 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
+  Alert,
+  ScrollView,
 } from "react-native";
 import { Video, ResizeMode } from "expo-av";
+import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication functions
+import { FIREBASE_AUTH } from "../../firebaseConfig"; // Adjust the import path accordingly
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
+  // Handle login button press
   const handleLogin = () => {
-    // Handle login logic
-    console.log("Username:", username);
-    console.log("Password:", password);
-  };
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter email and password.");
+      return;
+    }
 
-  const handleGoogleSignIn = () => {
-    // Handle Google sign-in logic
-    console.log("Google Sign-In");
-  };
-
-  const handleFacebookSignIn = () => {
-    // Handle Facebook sign-in logic
-    console.log("Facebook Sign-In");
+    signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("User logged in:", user);
+        // Navigate to your main application screen or dashboard
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Error", errorMessage);
+        console.error("Login error:", errorCode, errorMessage);
+      });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.titleContainer}>
         <Video
           ref={video}
@@ -57,10 +63,12 @@ export default function Login() {
         <Text style={styles.headerText}>Login</Text>
         <TextInput
           style={styles.input}
-          placeholder="Username/Email"
+          placeholder="Email"
           placeholderTextColor="#ccc"
-          value={username}
-          onChangeText={setUsername}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
         <TextInput
           style={styles.input}
@@ -70,26 +78,20 @@ export default function Login() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}> Log In</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Log In</Text>
         </TouchableOpacity>
         <View style={styles.socialLoginContainer}>
           <Text style={styles.orText}>or</Text>
           <View style={styles.socialLoginSubContainer}>
-            <TouchableOpacity
-              style={styles.socialButton}
-              onPress={handleGoogleSignIn}
-            >
+            <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require("../../assets/images/google-logo.png")}
                 style={styles.socialIcon}
               />
               <Text style={styles.socialButtonText}>Google</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.socialButton}
-              onPress={handleFacebookSignIn}
-            >
+            <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require("../../assets/images/facebook-logo.webp")}
                 style={styles.socialIcon}
@@ -99,13 +101,13 @@ export default function Login() {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
           <Text style={styles.noAccountText}>Don't have an account?</Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -115,6 +117,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     justifyContent: "flex-end",
     alignContent: "flex-end",
+    minHeight: 600,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 30,
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
     position: "absolute",
-    top: "15%",
+    top: "35%",
     zIndex: 2,
   },
   title: {
@@ -136,7 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     position: "absolute",
-    top: "55%",
+    top: "75%",
     zIndex: 2,
     color: "#FFA726",
   },
@@ -145,13 +152,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    minHeight: 300,
   },
+
   loginContainer: {
     padding: 10,
     backgroundColor: "#ffff",
     borderTopLeftRadius: 80,
     borderTopRightRadius: 80,
-    height: "56%",
+    height: "70%",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -223,7 +232,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
-    width: "100%",
+    width: "80%",
     justifyContent: "center",
     alignContent: "center",
     marginBottom: 10,
