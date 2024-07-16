@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import {
   StyleSheet,
   Text,
@@ -50,9 +50,11 @@ export default function Register() {
           // Optionally, save additional user information to Firestore
           console.log("User registered:", user);
           await setDoc(doc(FIREBASE_DB, "users", user.uid), {
+            userId: user.uid,
             username: username,
             password: password,
             email: email,
+            displayName: firstName,
             phoneNumber: phoneNumber,
             firstName: firstName,
             lastName: lastName,
@@ -60,6 +62,14 @@ export default function Register() {
             address: address,
           });
           console.log("User information saved to Firestore");
+          setUsername("");
+          setPassword("");
+          setEmail("");
+          setPhoneNumber("");
+          setFirstName("");
+          setLastName("");
+          setAge("");
+          setAddress("");
           setSuccessMessage("Successfully registered! Redirecting...");
         })
         .catch((error) => {

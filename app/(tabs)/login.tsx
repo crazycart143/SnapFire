@@ -14,6 +14,7 @@ import { Video, ResizeMode } from "expo-av";
 import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication functions
 import { FIREBASE_AUTH } from "../../firebaseConfig"; // Adjust the import path accordingly
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -21,6 +22,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+  const router = useRouter(); // Initialize the router
 
   // Handle login button press
   const handleLogin = () => {
@@ -35,7 +37,11 @@ export default function Login() {
         const user = userCredential.user;
         Alert.alert("User logged in!");
         Alert.alert("Email:" + user.email);
-        // Navigate to your main application screen or dashboard
+
+        setEmail("");
+        setPassword("");
+
+        router.replace({ pathname: "/home" });
       })
       .catch((error) => {
         const errorCode = error.code;
