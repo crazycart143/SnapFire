@@ -10,6 +10,7 @@ export default function TabLayout() {
     <Tabs>
       <Tabs.Screen name="login" options={{ headerShown: false }} />
       <Tabs.Screen name="register" options={{ headerShown: false }} />
+      <Tabs.Screen name="home" options={{ headerShown: false }} />
     </Tabs>
   );
 }

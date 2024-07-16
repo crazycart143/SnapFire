@@ -85,7 +85,9 @@ export default function Register() {
             </View>
           )}
           {successMessage ? (
-            <Text style={styles.successMessage}>{successMessage}</Text>
+            <View style={styles.successMessageContainer}>
+              <Text style={styles.successMessage}>{successMessage}</Text>
+            </View>
           ) : (
             <>
               {currentSection === "first" && (
@@ -398,6 +400,12 @@ const styles = StyleSheet.create({
     color: "#ffff",
     fontWeight: "bold",
     fontSize: 18,
+  },
+  successMessageContainer: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   successMessage: {
     fontSize: 18,
