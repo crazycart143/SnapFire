@@ -8,9 +8,26 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 export default function TabLayout() {
   return (
     <Tabs>
-      <Tabs.Screen name="login" options={{ headerShown: false }} />
-      <Tabs.Screen name="register" options={{ headerShown: false }} />
-      <Tabs.Screen name="home" options={{ headerShown: false }} />
+      <Tabs.Screen
+        name="login"
+        options={{
+          headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }}
+      />
+      <Tabs.Screen
+        name="register"
+        options={{
+          headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }}
+      />
     </Tabs>
   );
 }

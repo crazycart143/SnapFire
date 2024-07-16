@@ -41,7 +41,7 @@ export default function Login() {
         setEmail("");
         setPassword("");
 
-        router.replace({ pathname: "/home" });
+        router.push("/authenticated/home");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -124,7 +124,7 @@ export default function Login() {
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
                 <Image
-                  source={require("../../assets/images/facebook-logo.webp")}
+                  source={require("../../assets/images/facebook-logo.png")}
                   style={styles.socialIcon}
                 />
                 <Text style={styles.socialButtonText}>Facebook</Text>
@@ -133,7 +133,12 @@ export default function Login() {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Register</Text>
+              <Text
+                style={styles.buttonText}
+                onPress={() => router.push("/register")}
+              >
+                Register
+              </Text>
             </TouchableOpacity>
             <Text style={styles.noAccountText}>Don't have an account?</Text>
           </View>
@@ -313,7 +318,6 @@ const styles = StyleSheet.create({
   socialIcon: {
     width: 24,
     height: 24,
-    marginRight: 10,
   },
   loginButton: {
     backgroundColor: "#FFA726",

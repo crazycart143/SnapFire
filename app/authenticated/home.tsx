@@ -1,5 +1,5 @@
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/firebaseConfig";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { User } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -17,28 +18,28 @@ const dummyNewsData = [
   {
     id: "1",
     title: "Lorem Ipsum Dolor Sit Amet",
-    image: require("../../assets/images/news1.jpg"),
+    image: require("@/assets/images/news1.jpg"),
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id nisi nec metus lacinia posuere.",
   },
   {
     id: "2",
     title: "Pellentesque Habitant Morbi Tristique",
-    image: require("../../assets/images/news1.jpg"),
+    image: require("@/assets/images/news1.jpg"),
     description:
       "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
   },
   {
     id: "3",
     title: "Integer Vitae Nibh Molestie",
-    image: require("../../assets/images/news1.jpg"),
+    image: require("@/assets/images/news1.jpg"),
     description:
       "Integer vitae nibh molestie, pharetra nibh non, blandit arcu. Nam aliquet est vitae augue tincidunt condimentum.",
   },
   {
     id: "4",
     title: "Duis At Eros Efficitur",
-    image: require("../../assets/images/news1.jpg"),
+    image: require("@/assets/images/news1.jpg"),
     description:
       "Duis at eros efficitur, consectetur justo et, tempor odio. Quisque consequat, nisi ac maximus vestibulum.",
   },
@@ -47,6 +48,7 @@ const dummyNewsData = [
 export default function home() {
   const [user, setUser] = useState<User | null>(null); // Initialize with null and specify User | null type
   const [userData, setUserData] = useState<any>(null); // State to hold additional user data
+  const router = useRouter(); // Initialize the router
 
   useEffect(() => {
     const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(
@@ -93,7 +95,7 @@ export default function home() {
         <View style={styles.headerContainer}>
           <View style={styles.headerSubContainerOne}>
             <Image
-              source={require("../../assets/images/logo.png")}
+              source={require("@/assets/images/logo.png")}
               style={styles.logo}
             />
             <Text style={styles.headerTextOne}>
@@ -102,30 +104,33 @@ export default function home() {
           </View>
           <View style={styles.servicesContainer}>
             <View style={styles.servicesSubContainerOne}>
-              <View style={styles.serviceItem}>
+              <TouchableOpacity
+                style={styles.serviceItem}
+                onPress={() => router.push("/authenticated/snap")}
+              >
                 <Image
-                  source={require("../../assets/images/service1.png")}
+                  source={require("@/assets/images/service1.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Snap</Text>
-              </View>
+              </TouchableOpacity>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service2.png")}
+                  source={require("@/assets/images/service2.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Locate</Text>
               </View>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service3.png")}
+                  source={require("@/assets/images/service3.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Call 911</Text>
               </View>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service4.png")}
+                  source={require("@/assets/images/service4.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Donate</Text>
@@ -134,28 +139,28 @@ export default function home() {
             <View style={styles.servicesSubContainerTwo}>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service1.png")}
+                  source={require("@/assets/images/service1.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Snap</Text>
               </View>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service2.png")}
+                  source={require("@/assets/images/service2.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Locate</Text>
               </View>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service3.png")}
+                  source={require("@/assets/images/service3.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Call 911</Text>
               </View>
               <View style={styles.serviceItem}>
                 <Image
-                  source={require("../../assets/images/service4.png")}
+                  source={require("@/assets/images/service4.png")}
                   style={styles.servicesLogo}
                 />
                 <Text style={styles.serviceText}>Donate</Text>
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
   newsContainer: {
     flexDirection: "column",
     paddingLeft: 10,
-    marginTop: 20,
+    marginTop: 10,
   },
   newsSubContainer: {
     flexDirection: "row",
@@ -293,7 +298,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 10,
     overflow: "hidden",
-    elevation: 5,
   },
   newsImage: {
     width: "100%",
