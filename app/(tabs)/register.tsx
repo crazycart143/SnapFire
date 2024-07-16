@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router"; // Import useRouter
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../firebaseConfig"; // Adjust the import path accordingly
@@ -67,12 +69,13 @@ export default function Register() {
   };
 
   return (
-    <ImageBackground
-      source={require("../../assets/images/background.webp")}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ImageBackground
+          source={require("../../assets/images/background.webp")}
+          style={styles.backgroundImageContainer}
+        />
+        <View style={styles.registerContainer}>
           {!successMessage && (
             <View style={styles.headerTextContainer}>
               <Text style={styles.headerText}>Register</Text>
@@ -217,21 +220,28 @@ export default function Register() {
             </>
           )}
         </View>
-      </View>
-    </ImageBackground>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: "contain",
-    height: 400,
+    resizeMode: "cover",
+  },
+  inputFocused: {
+    borderColor: "#FFA726",
   },
   container: {
     flex: 1,
+    backgroundColor: "#f2f2f2",
     justifyContent: "flex-end",
-    alignItems: "flex-end",
+    alignContent: "flex-end",
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   headerTextContainer: {
     justifyContent: "center",
@@ -249,37 +259,159 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 30,
   },
-  formContainer: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 100,
-    borderTopRightRadius: 100,
-    width: "100%",
-    height: "60%",
+  backgroundImageContainer: {
+    height: "150%",
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
+    position: "relative",
+    minHeight: 300,
+    flex: 1,
+    resizeMode: "cover",
+  },
+  registerContainer: {
+    backgroundColor: "#ffff",
+    borderTopLeftRadius: 80,
+    borderTopRightRadius: 80,
+    height: "70%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: 30,
+    paddingTop: 30,
   },
   input: {
     backgroundColor: "#fff",
     paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
     marginBottom: 10,
-    width: "100%",
     color: "#000",
+    width: "100%",
     borderColor: "#ccc",
     borderWidth: 1,
   },
-  inputFocused: {
+  passwordContainer: {
+    position: "relative",
+    width: "100%",
+  },
+  passwordInput: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    marginBottom: 10,
+    color: "#000",
+    width: "100%",
     borderColor: "#FFA726",
+    borderWidth: 1,
+  },
+  eyeIcon: {
+    position: "absolute",
+    top: 15,
+    right: 20,
+  },
+  dividerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    width: "100%",
+  },
+  divider: {
+    flex: 1,
+    height: 2,
+    marginBottom: 4,
+    marginHorizontal: 10,
+    backgroundColor: "#ccc",
+  },
+  button: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noAccountText: {
+    fontSize: 14,
+    color: "#ccc",
+    textAlign: "center",
+  },
+  video: {
+    alignSelf: "center",
+    width: "100%",
+    height: 500,
+    position: "absolute",
+  },
+  socialLoginContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    marginTop: 10,
+    paddingHorizontal: 60,
+  },
+  socialLoginSubContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    columnGap: 10,
+    marginTop: 10,
+  },
+  orText: {
+    color: "#ccc",
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  socialButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffff", // Adjust for Google button color
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    width: "80%",
+    justifyContent: "center",
+    alignContent: "center",
+    marginBottom: 10,
+    borderColor: "#FFA726",
+    borderWidth: 1,
+  },
+  socialButtonText: {
+    color: "#ccc",
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  socialIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 10,
+  },
+  loginButton: {
+    backgroundColor: "#FFA726",
+    color: "#ffff",
+    padding: 6,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 6,
+  },
+  loginButtonText: {
+    color: "#ffff",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  successMessage: {
+    fontSize: 18,
+    color: "#4CAF50",
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "flex-end",
+    columnGap: 10,
     alignItems: "center",
     marginTop: 20,
-    columnGap: 10,
   },
   nextButton: {
     backgroundColor: "#FFA726",
@@ -310,11 +442,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#FFA726",
-  },
-  successMessage: {
-    fontSize: 18,
-    color: "#4CAF50",
-    fontWeight: "bold",
-    marginBottom: 20,
   },
 });
