@@ -212,12 +212,14 @@ export default function Register() {
               )}
 
               <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.backButton}
-                  onPress={() => router.push("/login")}
-                >
-                  <Text style={styles.backText}>Back</Text>
-                </TouchableOpacity>
+                {currentSection === "first" && (
+                  <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => router.push("/login")}
+                  >
+                    <Text style={styles.backText}>Back</Text>
+                  </TouchableOpacity>
+                )}
                 {currentSection === "second" && (
                   <TouchableOpacity
                     style={styles.backButton}
