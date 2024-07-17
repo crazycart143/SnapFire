@@ -135,7 +135,7 @@ export default function Login() {
             <TouchableOpacity style={styles.button}>
               <Text
                 style={styles.buttonText}
-                onPress={() => router.push("/register")}
+                onPress={() => router.push("/authenticated/home")}
               >
                 Register
               </Text>

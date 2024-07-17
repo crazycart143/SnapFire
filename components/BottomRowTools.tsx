@@ -16,7 +16,7 @@ export default function BottomRowTools({
   return (
     <View style={[styles.bottomContainer, styles.directionRowItemsCenter]}>
       <Link href={"/media-library"} asChild>
-        <IconButton androidName="library" iosName="photo.stack" />
+        <IconButton androidName="image" iosName="photo.stack" />
       </Link>
       <View style={styles.directionRowItemsCenter}>
         <TouchableOpacity onPress={() => setCameraMode("picture")}>
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     position: "absolute",
     alignSelf: "center",
-    bottom: 6,
+    bottom: 80,
+    paddingHorizontal: 20,
   },
 });

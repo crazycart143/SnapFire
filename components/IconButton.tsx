@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { SFSymbol, SymbolView } from "expo-symbols";
 import { StyleProp, TouchableOpacity, ViewStyle } from "react-native";
-import { Link } from "expo-router";
 
 const CONTAINER_PADDING = 5;
 const CONTAINER_WIDTH = 34;
@@ -11,7 +11,7 @@ const ICON_SIZE = 25;
 
 interface IconButtonProps {
   iosName: SFSymbol;
-  androidName: ComponentProps<typeof Ionicons>["name"];
+  androidName: ComponentProps<typeof MaterialIcons>["name"];
   containerStyle?: StyleProp<ViewStyle>;
   onPress?: () => void;
   width?: number;
@@ -53,7 +53,7 @@ export default function IconButton({
         }
         tintColor={"white"}
         fallback={
-          <Ionicons
+          <MaterialIcons
             size={ICON_SIZE}
             name={androidName}
             style={{}}

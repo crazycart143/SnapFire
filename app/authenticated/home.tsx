@@ -99,7 +99,7 @@ export default function home() {
               style={styles.logo}
             />
             <Text style={styles.headerTextOne}>
-              Welcome{userData ? `, ${userData.firstName?.split(" ")[0]}!` : ""}
+              Welcome,{userData ? ` ${userData.firstName?.split(" ")[0]}!` : ""}
             </Text>
           </View>
           <View style={styles.servicesContainer}>
